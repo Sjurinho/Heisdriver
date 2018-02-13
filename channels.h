@@ -1,4 +1,4 @@
-// Channel definitions for elevator control using LibComedi
+     // Channel definitions for elevator control using LibComedi
 //
 // 2006, Martin Korsgaard
 #ifndef __INCLUDE_DRIVER_CHANNELS_H__
