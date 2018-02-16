@@ -32,3 +32,10 @@ void initialize(void){ //Setter heisen i definert tilstand
         }
         stop_elevator(); //stopper i etasjen.
 }
+
+
+void light_floor(void){
+    if (elev_get_floor_sensor_signal() >= 0){
+        elev_set_floor_indicator(elev_get_floor_sensor_signal());
+    }
+}
