@@ -11,16 +11,16 @@ void close_door(void){
 }
 
 void drive_up(void){
-        elev_set_motor_direction(UP);
+        elev_set_motor_direction(DIRN_UP);
         printf("Going up");
 }
 
 void drive_down(void){
-        elev_set_motor_direction(DOWN);
+        elev_set_motor_direction(DIRN_DOWN);
         printf("Going down");
 }
 
 void stop_elevator(void){
-        elev_set_motor_direction(STOP);
+        elev_set_motor_direction(DIRN_STOP);
         printf("Stopping");
 }
