@@ -1,8 +1,10 @@
 #include "elev.h"
+#include "door.h"
 #include <stdio.h>
 
 
 int main() {
+
     // Initialize hardware
     if (!elev_init()) {
         printf("Unable to initialize elevator hardware!\n");
@@ -20,7 +22,10 @@ int main() {
         } else if (elev_get_floor_sensor_signal() == 0) {
             elev_set_motor_direction(DIRN_UP);
         }
-            elev_set_floor_indicator(elev_get_floor_sensor_signal())
+	if (elev_get_floor_sensor_signal() >= 0){
+		door_delay(3.0);
+	//	timer(3.0);
+	}
         // Stop elevator and exit program if the stop button is pressed
         if (elev_get_stop_signal()) {
             elev_set_motor_direction(DIRN_STOP);
