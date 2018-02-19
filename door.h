@@ -1,4 +1,2 @@
-void door_delay(void);
-
-void door_delay(int time_spent);
+void door_delay(int time_spent, elev_motor_direction_t DIRN);
 void timer(int time_spent);
