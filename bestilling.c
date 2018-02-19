@@ -5,7 +5,7 @@
 int floorOrders[N_FLOORS*2-2]={0};
 //returnerer antall etasjer mellom nåværende etasje og bestilt etasje. Negativt => ned, positivt=> opp.
 int calculateFloor(int floorOrder){
-    return floorOrder - elev_get_floor_signal();
+    return floorOrder - elev_get_floor_sensor_signal();
 }
 //setter knappens plass i tabellen til true
 void orderElevator(int floorOrdered){
@@ -13,9 +13,10 @@ void orderElevator(int floorOrdered){
 }
 //returnerer true hvis det er en kollisjon i etasjen
 int findCollision(int floorOrder){
-    int currentFloor=elev_get_floor_sensor_signal()
+    int currentFloor;
+    if(elev_get_floor_sensor_signal()!=-1){currentFloor = elev_get_floor_sensor_signal;}
     int dir = calculateFloor(floorOrder) < 0; //0 hvis dir = OPP, 1 hvis dir = NED
-    return floorOrders[currentFloor*2-dir] && currentfloor != -1; //Kommer aldri til å måtte sjekke for topp og bunnetasje, husk på å kalle i rett rekkefølge!  
+    return floorOrders[currentFloor*2-dir]; //Kommer aldri til å måtte sjekke for topp og bunnetasje, husk på å kalle i rett rekkefølge!  
 }
 
 
