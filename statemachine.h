@@ -1,6 +1,7 @@
-#include "utilites.h"
+#include "utilities.h"
 #include "elev.h"
 typedef enum States{
-initialize, drive, openDoor, closeDoor, takeOrder, fail
+Initialize, drive, openDoor, closeDoor, takeOrder, fail
 }State;
 
+typedef enum SuperState {UP, DOWN}; 
