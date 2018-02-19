@@ -16,27 +16,26 @@ elev_set_motor_direction(DIRN_UP);
     elev_motor_direction_t Direction;
     Direction = DIRN_UP;
     while(1){
+	if(elev_get_stop_signal()){
+	    elev_set_motor_direction(DIRN_STOP);
+	    Direction = DIRN_STOP;
+	    printf("STOPP-knapp trykket inn!\n");
+	    break;
+	}
         switch(Direction){
-	    case DIRN_DOWN:
-	    if(elev_get_floor_sensor_signal() == 3){
-		Direction = DIRN_DOWN;
-		elev_set_motor_direction(Direction);
+	    case DIRN_UP:
+	    	if(elev_get_floor_sensor_signal() == 3){
+			Direction = DIRN_DOWN;
 	    }
 	    break;
-            case DIRN_UP:
+            case DIRN_DOWN:
 	    if(elev_get_floor_sensor_signal() == 0){
 		Direction = DIRN_UP;
-
-		elev_set_motor_direction(Direction);
+		printf("hei");
 	    }
 	    break;
-	    case DIRN_STOP:
-		if(elev_get_stop_signal()){
-		elev_set_motor_direction(Direction);
-		}
-		break; 
 	}
-	//elev_set_motor_direction(Direction);
+	elev_set_motor_direction(Direction);
     }
     return 0; 
 }
