@@ -1,10 +1,6 @@
 #include "utilites.h"
 #include "elev.h"
-enum States{
-initialize, drive, openDoor, closeDoor, takeOrder
+typedef enum States{
+initialize, drive, openDoor, closeDoor, takeOrder, fail
 }State;
-    
-void stateMachine(void)
-    switch (States){
-        case initialize:
-            initialize();
+
