@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 int main() { 
-   // if(!elev_init()){
-   // return 1;
-    //}
+    if(!elev_init()){
+    return 1;
+    }
 //    initialize();
 //    int current_floor = elev_get_floor_sensor_signal();
   //  printf(current_floor);
@@ -27,14 +27,14 @@ int main() {
 	    	if(elev_get_floor_sensor_signal() == 3){
 			Direction = DIRN_DOWN;
 	        }
-		stateMachine(&next_state,Direction);
+		stateMachine(next_state,Direction);
 	        break;
             case DIRN_DOWN:
 	        if(elev_get_floor_sensor_signal() == 0){
 	            Direction = DIRN_UP;
 		    printf("hei");
 	        }
-	        stateMachine(&next_state,Direction);
+	        stateMachine(next_state,Direction);
 	        break;
 	}
 	//elev_set_motor_direction(Direction);

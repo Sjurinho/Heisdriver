@@ -27,12 +27,11 @@ void stop_elevator(void){
 }
 
 void initialize(void){ //Setter heisen i definert tilstand
-        while (elev_get_floor_sensor_signal()== -1){//ignorerer stopp og bestilling 
+        while (elev_get_floor_sensor_signal() == -1){//ignorerer stopp og bestilling 
 		printf("LOOOP");
                 elev_set_motor_direction(DIRN_UP); //kjører opp til nærmeste etasje, trenger ikke tenke på kantene ettersom dette er en precondit
-		}
-        }
-        stop_elevator(); //stopper i etasjen.
+	}
+        elev_set_motor_direction(DIRN_STOP); //stopper i etasjen.
 }
 
 
