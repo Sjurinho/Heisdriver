@@ -9,7 +9,7 @@ int calculateFloor(int floorOrder){
 }
 //setter knappens plass i tabellen til true
 void orderElevator(int floorOrdered){
-    floorOrders[floorOrder*2 - calculateFloor(floorOrdered)/abs(calculateFloor(floorOrdered))]=1;
+    floorOrders[floorOrdered*2 - calculateFloor(floorOrdered)/abs(calculateFloor(floorOrdered))]=1;
 }
 //returnerer true hvis det er en kollisjon i etasjen
 int findCollision(int floorOrder){

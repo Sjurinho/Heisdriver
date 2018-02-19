@@ -1,7 +1,8 @@
 #include "utilities.h"
 #include "elev.h"
+#include "bestilling.h"
+#include <stdlib.h>
 typedef enum States{
-Initialize, drive, openDoor, closeDoor, takeOrder, fail
+INITIALIZE, DRIVE, DOOR, TAKEORDER, FAIL
 }State;
-
-typedef enum SuperState {UP, DOWN}; 
+void stateMachine(State* next_state, elev_motor_direction_t dir);
