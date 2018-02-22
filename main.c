@@ -16,16 +16,10 @@ int main() {
                 break;
         }
         // Stop elevator and exit program if the obstruction button is pressed
-        
-        
-
-
-        
     
 	if (current_state == FAIL){
 		return 1;
 	}
-}
+	}
     return 0;
-    
 }

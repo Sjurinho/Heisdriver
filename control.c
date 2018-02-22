@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "control.h"
 #include "door.h"
 #include "utilities.h"
 #include "elev.h"
@@ -20,7 +21,7 @@ enum State stateControl(enum State current_state){
             }
             break;
         case DRIVE:
-            if(elev_get_stop_signal){
+            if(elev_get_stop_signal()){
                 next_state = STOP_SIGNAL;
             }
             next_floor  = get_floor();
@@ -35,7 +36,7 @@ enum State stateControl(enum State current_state){
                 drive_up();
             }
             if(current_floor == next_floor){
-                next_state = ARRIVVED; 
+                next_state = ARRIVED; 
                 reset_order(current_floor);
                 next_state = ARRIVED;
             }
@@ -61,7 +62,7 @@ enum State stateControl(enum State current_state){
             printf("FAILURE");
             next_state = INITIALIZE;
     }
-
+	return next_state;
 }
 
 
