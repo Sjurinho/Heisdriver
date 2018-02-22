@@ -111,14 +111,40 @@ void reset_order(int floor){
     order_size -= onFloor;
 }
 
+void set_floor(void){
+	int temp_floor = elev_get_floor_sensor_signal();
+	if(temp_floor >= 0){
+		current_floor = temp_floor;
+		elev_set_floor_indicator(current_floor);
+		
+		
+		printf("current floor is: ");
+		printf("%d", current_floor);
+		printf("\n");
+		print_orders();
+	}
+}
 
 
+void set_stop(void){
+	stop_elevator();
+	printf("Motor stopped! \n");
 
+	elev_set_stop_lamp(1);
+	printf("Stop light enabled \n");
+	for(int i= 0; i< N_FLOORS-1; i++){
+		reset_order(i);
+	}
 
+	if(elev_get_floor_sensor_signal() == 1){
+		open_door();
+	}
+	printf("current floor = ");
+	printf("%d", current_floor);
+	printf("\n");
 
-
-
-
+	
+}
 
 
 

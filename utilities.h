@@ -15,3 +15,7 @@ void stop_elevator(void);
 void initialize(void);
 
 void setOrder(void);
+
+void set_floor(void);
+
+void set_stop(void);
