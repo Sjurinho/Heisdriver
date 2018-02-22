@@ -121,7 +121,6 @@ void set_floor(void){
 		printf("current floor is: ");
 		printf("%d", current_floor);
 		printf("\n");
-		print_orders();
 	}
 }
 
