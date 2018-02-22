@@ -1,8 +1,8 @@
 #include "elev.h"
-#include "statemachine.h"
+//#include "statemachine.h"
 #include "door.h"
 #include "utilities.h"
-#include <control.h>
+#include "control.h"
 #include <stdio.h>
 
 int main() { 
@@ -10,7 +10,7 @@ int main() {
     while(current_state != FAIL){
         current_state = stateControl(current_state);  
     
-    }
+    
             if(elev_get_obstruction_signal()){
                 elev_set_motor_direction(DIRN_STOP);
                 break;
@@ -21,11 +21,11 @@ int main() {
 
 
         
-    }
-	if (current_state == FAILURE){
+    
+	if (current_state == FAIL){
 		return 1;
 	}
-
+}
     return 0;
-    }
+    
 }

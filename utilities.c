@@ -83,8 +83,8 @@ int checkArrived(){
 }
     
 int get_floor(){ //Sjekker om noen av elementene er 1 for å finne etasje 
-    for (i = 0; i < N_FLOORS; i++) {
-        for (j = 0; j < 3; j++) {
+    for (int i = 0; i < N_FLOORS; i++) {
+        for (int j = 0; j < 3; j++) {
             if (order[i][j] == 1){
                 return i;
             }
@@ -96,9 +96,9 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne etasje
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, current_floor, 0);
     int onFloor = 0;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         if(order[current_floor][i] == 1){
-            order[current_floo][i] = 0;
+            order[current_floor][i] = 0;
             onFloor++; 
         } 
     }
