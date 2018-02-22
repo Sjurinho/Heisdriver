@@ -19,3 +19,5 @@ void setOrder(void);
 void set_floor(void);
 
 void set_stop(void);
+
+void printOrder(void);

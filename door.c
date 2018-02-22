@@ -21,9 +21,8 @@ void timer(double time_wait){
 void door_delay(int time_wait){ //stopper heisen i tre sekunder og setter på lys
     stop_elevator();
     open_door(); 
-    elev_set_door_open_lamp(1);
     timer(time_wait);
     close_door(); 
-//    drive_up(); //midlertidig funksjon for å starte heisen igjen (testing)
+	elev_set_door_open_lamp(0);
     timer(0.5); //Gir heisen 0.5 sek til å starte igjen slik at den ikke er stuck i en etasje
 }

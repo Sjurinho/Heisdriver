@@ -10,8 +10,8 @@ int main() {
     while(current_state != FAIL){
         current_state = stateControl(current_state);  
     
-    
             if(elev_get_obstruction_signal()){
+		printOrder();
                 elev_set_motor_direction(DIRN_STOP);
                 break;
         }
