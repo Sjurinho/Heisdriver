@@ -30,8 +30,8 @@ void stop_elevator(void){
 }
 
 void initialize(void){ //Setter heisen i definert tilstand
-        while (elev_get_floor_sensor_signal() == -1){//ignorerer stopp og bestilling 
-                elev_set_motor_direction(DIRN_UP); //kjører opp til nærmeste etasje, trenger ikke tenke på kantene ettersom dette er en precondit
+    while (elev_get_floor_sensor_signal() == -1){//ignorerer stopp og bestilling 
+        elev_set_motor_direction(DIRN_UP); //kjører opp til nærmeste etasje, trenger ikke tenke på kantene ettersom dette er en precondit
 	}
 	stop_elevator();
 	close_door();
@@ -58,33 +58,33 @@ void setOrder(void){
 //	if(elev_get_floor_sensor_signal() >= 0){
     for(int i = 0; i < N_FLOORS; i++){
         if(elev_get_button_signal(BUTTON_COMMAND, i)){ //BESTILLE
-		if(order[i][2] != 1){
-            		order[i][2] = 1;
-            		order_size++;
-		}
-            elev_set_button_lamp(BUTTON_COMMAND, i, 1);
+    		if(order[i][2] != 1){
+        		order[i][2] = 1;
+           		order_size++;
+        		}
+        elev_set_button_lamp(BUTTON_COMMAND, i, 1);
         }
         if( i < N_FLOORS-1){//OPP. dvs heisen i 1. etg, 2 etg. eller 3. etg
-	if(elev_get_button_signal(BUTTON_CALL_UP, i)){
-	if(order[i][1] != 1){
-            order[i][1] = 1; 
-            order_size++;
-		}
-            elev_set_button_lamp(BUTTON_CALL_UP, i, 1);
-	}
-        }
+        	if(elev_get_button_signal(BUTTON_CALL_UP, i)){
+            	if(order[i][1] != 1){
+                    order[i][1] = 1; 
+                    order_size++;
+		        }
+                elev_set_button_lamp(BUTTON_CALL_UP, i, 1);
+	        }
+        }   
         if( i > 0){ //NED. dvs heisen i 2., 3. eller 4. etg.
-	if(elev_get_button_signal(BUTTON_CALL_DOWN, i)){
-	if(order[i][0] != 1){	
-            order[i][0] = 1; 
-            order_size++;
-	}
+	        if(elev_get_button_signal(BUTTON_CALL_DOWN, i)){
+	            if(order[i][0] != 1){	
+                    order[i][0] = 1; 
+                    order_size++;
+            	}
             elev_set_button_lamp(BUTTON_CALL_DOWN, i, 1);
-        }
-	}
+            }   
+	    }   
     }
 }
-//}
+
 
 int get_order_size(){
     return order_size;
