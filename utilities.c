@@ -108,7 +108,7 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
     int onFloor = 0; //muligens litt forvirrende navn, men holder telling
-    for (int i = 0; i <= 2; i++){ // for alle etasjene 
+    for (int i = 0; i <=N_FLOORS-1; i++){ // for alle etasjene  
         if(order[floor][i] == 1){ //slette alle eksisterende bestillinger som finnes i gitt etasje. Teller antall slettede bestillinger
             order[floor][i] = 0;
             onFloor++; 
@@ -139,7 +139,7 @@ void set_stop(void){
 	stop_elevator();
 	printf("Motor stopped! \n");
 
-	elev_set_stop_lamp(1);
+	elev_set_stop_lamp(elev_get_stop_signal());
 	printf("Stop light enabled \n");
 	for(int i= 0; i< N_FLOORS - 1; i++){
 		reset_order(i);
@@ -149,7 +149,7 @@ void set_stop(void){
 	printf("%d", current_floor);
 	printf("\n");
 
-	if(elev_get_floor_sensor_signal() == 1){
+	if(elev_get_floor_sensor_signal() >= 0){
 		open_door();
 	}	
 }
