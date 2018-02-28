@@ -45,22 +45,22 @@ void light_floor(void){
     }
 }
 
+//order og order_size er globale variabler
 int order[N_FLOORS][3] = {{ 0 }}; //initialiserer en 2D-liste. N_FLOOR etasjer og 3 forskjellige typer knapper
     /* 2-indeks beskriver å BESTILLE heisen */
     /* 1-indeks beskriver heis OPP-knaoo */
     /* 0-indeks beskriver heis NED-knapp */
-
  int order_size = 0; //variabel for kontroll over str på order. 
  
 
-
+//Er dette en god løsning for bestilling (med forløkka)
 void setOrder(void){
 //	if(elev_get_floor_sensor_signal() >= 0){
     for(int i = 0; i < N_FLOORS; i++){
-        if(elev_get_button_signal(BUTTON_COMMAND, i)){ //BESTILLE
+        if(elev_get_button_signal(BUTTON_COMMAND, i)){ //BESTILLE, dvs indeksen er 2
     		if(order[i][2] != 1){
         		order[i][2] = 1;
-           		order_size++;
+           		order_size++; //holder kontroll på størrelsen til ordre 
         		}
         elev_set_button_lamp(BUTTON_COMMAND, i, 1);
         }
@@ -94,7 +94,7 @@ int checkArrived(){
     return (current_state == next_state);
 }
     
-int get_floor(){ //Sjekker om noen av elementene er 1 for å finne etasje 
+int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger  
     for (int i = 0; i < N_FLOORS; i++) {
         for (int j = 0; j < 3; j++) {
             if (order[i][j] == 1){
@@ -107,29 +107,27 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne etasje
 
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
-    int onFloor = 0;
-    for (int i = 0; i <= 2; i++) {
-        if(order[floor][i] == 1){
+    int onFloor = 0; //muligens litt forvirrende navn, men holder telling
+    for (int i = 0; i <= 2; i++){ // for alle etasjene 
+        if(order[floor][i] == 1){ //slette alle eksisterende bestillinger som finnes i gitt etasje. Teller antall slettede bestillinger
             order[floor][i] = 0;
             onFloor++; 
         } 
     }
-    if(floor != 0){
+    if(floor != 0){ //skrur av lys
         elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
     }
     if(floor != N_FLOORS-1){
         elev_set_button_lamp(BUTTON_CALL_UP,floor, 0); 
     }
-    order_size -= onFloor;
+    order_size -= onFloor; //trekker antall slettede bestillinger fra order_size
 }
 
-void set_floor(void){
+void set_floor(void){ //straight up tatt fra hermaninho, setter floor_indicator og skriver ut current floor. Noe galt med denne funksjonen (eller kallet) er at den blir kalt i en evig løkke (skriver ut hele tiden)
 	int temp_floor = elev_get_floor_sensor_signal();
 	if(temp_floor >= 0){
 		current_floor = temp_floor;
 		elev_set_floor_indicator(current_floor);
-		
-		
 		printf("current floor is: ");
 		printf("%d", current_floor);
 		printf("\n");

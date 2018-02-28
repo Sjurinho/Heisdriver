@@ -42,7 +42,7 @@ enum State stateControl(enum State current_state){
             if(current_floor == next_floor){
 		stop_elevator();
                 reset_order(current_floor);
-		door_delay(3.0);
+		door_delay(3.0); //bug som stopper programmet istedenfor bare døra
                 next_state = ARRIVED;
             }
             break;
@@ -54,7 +54,6 @@ enum State stateControl(enum State current_state){
 		break;
         case STOP_SIGNAL:
             if(elev_get_floor_sensor_signal()!= -1){
-		printf("HER ER DET FEIL\n");
                 set_stop();
                 open_door();
                 elev_set_door_open_lamp(1);
