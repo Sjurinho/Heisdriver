@@ -134,23 +134,14 @@ void set_floor(void){ //straight up tatt fra hermaninho, setter floor_indicator 
 
 void set_stop(void){
 	stop_elevator();
-	printf("Motor stopped! \n");
-
 	elev_set_stop_lamp(elev_get_stop_signal());
-	printf("Stop light enabled \n");
 	for(int i= 0; i< N_FLOORS - 1; i++){
 		reset_order(i);
 	}
-
-	printf("current floor = ");
-	printf("%d", current_floor);
-	printf("\n");
-
 	if(elev_get_floor_sensor_signal() >= 0){
 		open_door();
 	}	
 }
-
 
 
 
@@ -170,4 +161,12 @@ void printFloor(void){
 	printf("%d", current_floor);
     printf("\n");
 	
+}
+
+void printStop(void){
+    printf("Motor stopped!");
+    if( elev_get_stop_signal()){
+        printf("Stop light enabled!");
+    }
+    printFloor();
 }
