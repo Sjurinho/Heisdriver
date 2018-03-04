@@ -56,8 +56,7 @@ enum State stateControl(enum State current_state){
 		//}
             //legge inn en stopp her?
 	    //else{ 
-                setOrder(); 
-        		close_door();
+        	close_door();
                 next_state = TAKEORDER;
 	//	}
 	    break;
