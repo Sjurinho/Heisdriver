@@ -13,6 +13,7 @@ enum State stateControl(enum State current_state){
 		break;
             }
             initialize(); 
+            printFloor();
             next_state = TAKEORDER;
             break;
         case TAKEORDER:
@@ -41,9 +42,10 @@ enum State stateControl(enum State current_state){
                 drive_up();
             }
             if(current_floor == next_floor){
-		stop_elevator();
+        		stop_elevator();
+                printFloor();
                 reset_order(current_floor);
-		door_delay(3.0); //bug som stopper programmet istedenfor bare døra
+	        	door_delay(3.0); //bug som stopper programmet istedenfor bare døra
                 next_state = ARRIVED;
             }
             break;
