@@ -128,10 +128,7 @@ void set_floor(void){ //straight up tatt fra hermaninho, setter floor_indicator 
 	if(temp_floor >= 0){
 		current_floor = temp_floor;
 		elev_set_floor_indicator(current_floor);
-		printf("current floor is: ");
-		printf("%d", current_floor);
-		printf("\n");
-	}
+    }
 }
 
 
@@ -166,4 +163,11 @@ void printOrder(void){
 			}
 		printf("\n");
 	}
+}
+
+void printFloor(void){
+    printf("current floor is: ");
+	printf("%d", current_floor);
+    printf("\n");
+	
 }
