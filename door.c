@@ -26,3 +26,18 @@ void door_delay(int time_wait){ //stopper heisen i tre sekunder og setter på ly
 	elev_set_door_open_lamp(0);
     timer(0.5); //Gir heisen 0.5 sek til å starte igjen slik at den ikke er stuck i en etasje
 }
+
+
+
+void start_timer(){
+	time(&start_value); // time() returns seconds since a pre-defined happening
+}
+
+int check_timer(double seconds){
+	time(&end_value);
+	if (difftime(end_value, start_value) >= seconds){
+		return 1;
+	
+	}
+	return 0;
+}
