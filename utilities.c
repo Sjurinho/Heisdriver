@@ -157,7 +157,7 @@ void set_stop(void){
 
 
 void printOrder(void){
-	for (int i = 0; i < 4; i++){
+	for (int i = 0; i < N_FLOORS; i++){
 		for(int j = 0; j < 3; j++){
 			printf("%d ", order[i][j]);
 			}

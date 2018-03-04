@@ -21,6 +21,7 @@ enum State stateControl(enum State current_state){
             if(get_order_size() !=  0){
                 next_state = DRIVE;
             }
+	    next_floor  = get_floor();
             break;
         case DRIVE:
 		    elev_set_stop_lamp(0);
@@ -29,7 +30,6 @@ enum State stateControl(enum State current_state){
                 //next_state = STOP_SIGNAL;
 		//break;
             //}
-            next_floor  = get_floor();
             if(elev_get_floor_sensor_signal() != -1){
                 current_floor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
                 set_floor(); 
