@@ -1,3 +1,4 @@
+
 int direction;
 int current_floor;
 int next_floor;
@@ -23,3 +24,5 @@ void set_stop(void);
 void printOrder(void);
 
 void printFloor(void);
+
+void printStop(void);
