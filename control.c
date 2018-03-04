@@ -46,7 +46,8 @@ enum State stateControl(enum State current_state){
 		        stop_elevator();
                 printFloor();
                 reset_order(current_floor);
-		        door_delay(3.0); //bug som stopper programmet istedenfor bare døra
+                start_timer();
+                elev_set_door_open_lamp(1);
                 next_state = ARRIVED;
             }
             break;
@@ -56,22 +57,25 @@ enum State stateControl(enum State current_state){
 		//}
             //legge inn en stopp her?
 	    //else{ 
-        	close_door();
-                next_state = TAKEORDER;
+                setOrder(); 
+                if(check_timer(3.0)){
+                    elev_set_door_open_lamp(0);
+                    next_state = TAKEORDER;
+                }
 	//	}
 	    break;
         case STOP_SIGNAL: //Klarer ikke kjøre ned til 2. får kun åpen dør signal. Opp går fint
-            set_stop();
-            if(elev_get_floor_sensor_signal()!= -1&&!elev_get_stop_signal()){
-	        open_door();
-                elev_set_door_open_lamp(1);
-                elev_set_stop_lamp(0);
-        	door_delay(3);
-           }
-	    if(!elev_get_stop_signal()){
-	        elev_set_stop_lamp(0);}
-    	    next_state=TAKEORDER;
-            break;
+	    while (elev_get_stop_signal()){
+		set_stop();
+		start_timer();
+		}
+	    elev_set_stop_lamp(0);
+	    if(elev_get_floor_sensor_signal()!=-1){
+		next_state=ARRIVED;
+		break;
+		}     
+	    next_state=TAKEORDER;
+	    break;      
         case FAIL:
             stop_elevator();
             printStop();

@@ -1,28 +1,25 @@
 #include "elev.h"
 #include "utilities.h"
+#include "door.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
-void timer(double time_wait){
-    clock_t begin; 
-    double time_spent; 
-    begin = clock(); //starter klokka
-    while(1){
-        time_spent = (double)(clock() - begin) / CLOCKS_PER_SEC; //teller opp
-        if (time_spent >= time_wait){ //sjekker om det har gått mer enn 3 sek
-            break;
-        }
-    }
+
+
+
+
+
+
+void start_timer(){
+	time(&start_value); // time() returns seconds since a pre-defined happening
 }
 
-
-
-void door_delay(int time_wait){ //stopper heisen i tre sekunder og setter på lys
-    stop_elevator();
-    open_door(); 
-    timer(time_wait);
-    close_door(); 
-	elev_set_door_open_lamp(0);
-    timer(0.5); //Gir heisen 0.5 sek til å starte igjen slik at den ikke er stuck i en etasje
+int check_timer(double seconds){
+	time(&end_value);
+	if (difftime(end_value, start_value) >= seconds){
+		return 1;
+	
+	}
+	return 0;
 }

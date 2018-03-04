@@ -50,8 +50,7 @@ int order[N_FLOORS][3] = {{ 0 }}; //initialiserer en 2D-liste. N_FLOOR etasjer o
     /* 2-indeks beskriver å BESTILLE heisen */
     /* 1-indeks beskriver heis OPP-knaoo */
     /* 0-indeks beskriver heis NED-knapp */
- int order_size = 0; //variabel for kontroll over str på order. 
- 
+int order_size=0;  
 
 //Er dette en god løsning for bestilling (med forløkka)
 void setOrder(void){
@@ -135,7 +134,7 @@ void set_floor(void){ //straight up tatt fra hermaninho, setter floor_indicator 
 void set_stop(void){
 	stop_elevator();
 	elev_set_stop_lamp(elev_get_stop_signal());
-	for(int i= 0; i< N_FLOORS - 1; i++){
+	for(int i= 0; i< N_FLOORS; i++){
 		reset_order(i);
 	}
 	if(elev_get_floor_sensor_signal() >= 0){

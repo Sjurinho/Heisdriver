@@ -1,4 +1,3 @@
-
 int direction;
 int current_floor;
 int next_floor;
