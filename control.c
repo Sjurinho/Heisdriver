@@ -42,7 +42,7 @@ enum State stateControl(enum State current_state){
             if(current_floor < next_floor){
                 drive_up();
             }
-            if(current_floor == next_floor){
+            if(elev_get_floor_sensor_signal() == next_floor){
 		        stop_elevator();
                 printFloor();
                 reset_order(current_floor);
@@ -57,7 +57,7 @@ enum State stateControl(enum State current_state){
             //legge inn en stopp her?
 	    //else{ 
                 setOrder(); 
-		close_door();
+        		close_door();
                 next_state = TAKEORDER;
 	//	}
 	    break;
