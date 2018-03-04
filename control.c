@@ -23,6 +23,7 @@ enum State stateControl(enum State current_state){
                 next_state = DRIVE;
             }
 	    next_floor  = get_floor();
+	    stop = 1;
             break;
         case DRIVE:
 		    elev_set_stop_lamp(0);
@@ -62,13 +63,12 @@ enum State stateControl(enum State current_state){
 	    break;
         case STOP_SIGNAL: //Klarer ikke kjøre ned til 2. får kun åpen dør signal. Opp går fint
             set_stop();
-            printStop();
             if(elev_get_floor_sensor_signal()!= -1&&!elev_get_stop_signal()){
-		        open_door();
+	        open_door();
                 elev_set_door_open_lamp(1);
                 elev_set_stop_lamp(0);
-          		door_delay(3);
-            }
+        	door_delay(3);
+           }
 	    if(!elev_get_stop_signal()){
 	        elev_set_stop_lamp(0);}
     	    next_state=TAKEORDER;

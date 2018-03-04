@@ -158,15 +158,15 @@ void printOrder(void){
 
 void printFloor(void){
     printf("current floor is: ");
-	printf("%d", current_floor);
+	printf("%d", current_floor+1);
     printf("\n");
 	
 }
 
 void printStop(void){
-    printf("Motor stopped!");
+    printf("Motor stopped!\n");
     if( elev_get_stop_signal()){
-        printf("Stop light enabled!");
+        printf("Stop light enabled!\n");
     }
     printFloor();
 }
