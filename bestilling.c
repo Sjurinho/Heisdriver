@@ -19,4 +19,3 @@ int findCollision(int floorOrder){
     return floorOrders[currentFloor*2-dir]; //Kommer aldri til å måtte sjekke for topp og bunnetasje, husk på å kalle i rett rekkefølge!  
 }
 
-

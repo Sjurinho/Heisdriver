@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "utilities.h"
 int stop;
+int direction; //-1 ned, 1 opp
 enum State { //Lager states som heisen kan være i
     INITIALIZE, TAKEORDER, DRIVE, STOP_SIGNAL, FAIL, ARRIVED};
 
