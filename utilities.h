@@ -25,3 +25,8 @@ void printOrder(void);
 void printFloor(void);
 
 void printStop(void);
+
+int findCollision(void);
+
+void reset_direction(int floor);
+

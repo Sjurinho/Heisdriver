@@ -85,13 +85,25 @@ int checkArrived(){
 }
     
 int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger  
-    for (int i = 0; i < N_FLOORS; i++) {
-        for (int j = 0; j < 3; j++) {
-            if (order[i][j] == 1){
-                return i;
+    if (direction == 0){
+	for (int i = 0; i < N_FLOORS; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (order[i][j] == 1){
+                    return i;
+                }
             }
         }
     }
+    else{
+       	for (int i = N_FLOORS-1; i >= 0; i--) {
+            for (int j = 0; j < 3; j++) {
+                if (order[i][j] == 1){
+                    return i;
+        
+    }
+}
+}
+}
     return 0;
 }
 
@@ -112,6 +124,29 @@ void reset_order(int floor){
         elev_set_button_lamp(BUTTON_CALL_UP,floor, 0); 
     }
     order_size -= onFloor; //trekker antall slettede bestillinger fra order_size
+}
+
+void reset_direction(int floor){
+    int ordersOnFloor = 0; //muligens litt forvirrende navn, men holder telling
+    elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
+    if (order[floor][2]){
+	order[floor][2] = 0;
+	ordersOnFloor++;
+    }
+    if(direction && floor != N_FLOORS-1){
+	elev_set_button_lamp(BUTTON_CALL_UP, floor, 0);
+	ordersOnFloor+=order[floor][1];
+	order[floor][1] = 0;
+    }
+    else if(!direction && floor != 0){
+	elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
+	ordersOnFloor+=order[floor][0];
+	order[floor][0] = 0;
+    }
+    
+    order_size -= ordersOnFloor;	 
+    printf("\norder_size: %d", order_size);
+    printf("\nordersOnFloor: %d", ordersOnFloor);
 }
 
 void set_floor(void){ //setter current floor)
@@ -159,4 +194,12 @@ void printStop(void){
     printFloor();
 }
 
+
+int findCollision(void){
+    int temp_floor=elev_get_floor_sensor_signal();
+    if (temp_floor!=-1){
+        return (order[current_floor][direction] || order[current_floor][2]);
+    }
+   return 0;
+}
 
