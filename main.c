@@ -1,6 +1,4 @@
 #include "elev.h"
-//#include "statemachine.h"
-#include "door.h"
 #include "utilities.h"
 #include "control.h"
 #include <stdio.h>

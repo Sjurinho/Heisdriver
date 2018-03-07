@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "control.h"
-#include "door.h"
+#include "timer.h"
 #include "utilities.h"
 #include "elev.h"
 
@@ -17,11 +17,12 @@ enum State stateControl(enum State currentState){
             nextState = TAKEORDER;
             break;
        case TAKEORDER:
-            set_order();
+            setOrder();
+            delay(100); //dette er nødvendig for at heisen ikke skal åpnes to ganger i samme etasje. 
             if(get_order_size() !=  0){
                 nextState = DRIVE;
             }
-	    nextFloor  = get_floor();
+	        nextFloor  = get_floor();
             break;
         case DRIVE:
             if(elev_get_floor_sensor_signal() != -1){
@@ -63,7 +64,6 @@ enum State stateControl(enum State currentState){
                 else if(direction == 0){
                     drive_up(); 
                 }
-	    	    printf("%d", direction);
             }
             break;
         case ARRIVED:
