@@ -1,6 +1,6 @@
 int direction;
-int current_floor;
-int next_floor;
+int currentFloor;
+int nextFloor;
 
 void close_door(void);
 
@@ -14,19 +14,19 @@ void stop_elevator(void);
 
 void initialize(void);
 
-void setOrder(void);
+void set_order(void);
 
 void set_floor(void);
 
 void set_stop(void);
 
-void printOrder(void);
+void print_order(void);
 
-void printFloor(void);
+void print_floor(void);
 
-void printStop(void);
+void print_stop(void);
 
-int findCollision(void);
+int find_collision(void);
 
 void reset_direction(int floor);
 

@@ -4,59 +4,59 @@
 #include "utilities.h"
 #include "elev.h"
 
-enum State stateControl(enum State current_state){
-     switch (current_state) {
+enum State stateControl(enum State currentState){
+     switch (currentState) {
         case INITIALIZE:
             if (!elev_init()){
                 printf("Hardware is not initialized");
-                next_state = FAIL;
+                nextState = FAIL;
         		break;
             }
             initialize(); 
-            printFloor();
-            next_state = TAKEORDER;
+            print_floor();
+            nextState = TAKEORDER;
             break;
        case TAKEORDER:
-            setOrder();
+            set_order();
             if(get_order_size() !=  0){
-                next_state = DRIVE;
+                nextState = DRIVE;
             }
-	    next_floor  = get_floor();
+	    nextFloor  = get_floor();
             break;
         case DRIVE:
             if(elev_get_floor_sensor_signal() != -1){
-                current_floor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
+                currentFloor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
                 set_floor(); 
             }
     	    elev_set_stop_lamp(0);
-	        setOrder();
+	        set_order();
 	        if(findCollision()){
-	            next_state = ARRIVED;
+	            nextState = ARRIVED;
     	    	printf("noe fett");
 	        	//stop_elevator();
-		        //reset_direction(current_floor); IKKE TESTET Å KOMMENTERE UT DENN E
-                reset_order(current_floor); //sletter alle bestillinger i denne etasjen dersom den blir kalt
-		        printFloor();
+		        //reset_direction(currentFloor); IKKE TESTET Å KOMMENTERE UT DENN E
+                reset_order(currentFloor); //sletter alle bestillinger i denne etasjen dersom den blir kalt
+		        print_floor();
 		        start_timer();
 		        //elev_set_door_open_lamp(1);		
             }
-            else if(current_floor > next_floor){
+            else if(currentFloor > nextFloor){
                 drive_down();
                 direction = 0; 
             }
-            else if(current_floor < next_floor){
+            else if(currentFloor < nextFloor){
                 drive_up();
                 direction = 1;
             }
-            else if(elev_get_floor_sensor_signal() == next_floor){
+            else if(elev_get_floor_sensor_signal() == nextFloor){
 	            //stop_elevator();
-                printFloor();
-                reset_order(current_floor);
+                print_floor();
+                reset_order(currentFloor);
                 start_timer();
-                next_state = ARRIVED;
+                nextState = ARRIVED;
             }
             //Lagt inn denne siden sist. ikke prøvd
-            else if(elev_get_floor_sensor_signal() == -1 && next_floor == current_floor){
+            else if(elev_get_floor_sensor_signal() == -1 && nextFloor == currentFloor){
                if(direction == 1){
                     drive_down();
                 }
@@ -69,10 +69,10 @@ enum State stateControl(enum State current_state){
         case ARRIVED:
 	        stop_elevator();
 	        elev_set_door_open_lamp(1);
-            setOrder(); 
+            set_order(); 
             if(check_timer(3.0)){
                 elev_set_door_open_lamp(0);
-                next_state = TAKEORDER;
+                nextState = TAKEORDER;
             }
 	    break;
         case STOP_SIGNAL: //Klarer ikke kjøre ned til 2. får kun åpen dør signal. Opp går fint
@@ -82,21 +82,21 @@ enum State stateControl(enum State current_state){
 		    }
     	    elev_set_stop_lamp(0);
 	        if(elev_get_floor_sensor_signal()!=-1){
-		        next_state=ARRIVED;
+		        nextState=ARRIVED;
 		        break;
 		    }     
-	        next_state=TAKEORDER;
+	        nextState=TAKEORDER;
 	        break;      
         case FAIL:
             stop_elevator();
-            printStop();
+            print_stop();
             printf("FAILURE");
-            next_state = INITIALIZE;
+            nextState = INITIALIZE;
     		break;
     	default:
     		break;
     }
-	return next_state;
+	return nextState;
 }
 
 
