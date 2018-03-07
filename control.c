@@ -34,7 +34,8 @@ enum State stateControl(enum State current_state){
 	            next_state = ARRIVED;
     	    	printf("noe fett");
 	        	//stop_elevator();
-		        reset_direction(current_floor);
+		        //reset_direction(current_floor); IKKE TESTET Å KOMMENTERE UT DENN E
+                reset_order(current_floor); //sletter alle bestillinger i denne etasjen dersom den blir kalt
 		        printFloor();
 		        start_timer();
 		        //elev_set_door_open_lamp(1);		

@@ -84,7 +84,7 @@ int checkArrived(){
     return (current_state == next_state);
 }
     
-int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger  
+int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger avhengig av retningen
     if (direction == 0){
 	for (int i = 0; i < N_FLOORS; i++) {
             for (int j = 0; j < 3; j++) {
