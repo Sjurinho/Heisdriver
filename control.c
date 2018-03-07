@@ -18,6 +18,7 @@ enum State stateControl(enum State current_state){
             break;
        case TAKEORDER:
             setOrder();
+	    delay(100); //dette er nødvendig for at heisen ikke skal åpnes to ganger i samme etasje. 
             if(get_order_size() !=  0){
                 next_state = DRIVE;
             }
@@ -33,8 +34,6 @@ enum State stateControl(enum State current_state){
 	        if(findCollision()){
 	            next_state = ARRIVED;
     	    	printf("noe fett");
-	        	//stop_elevator();
-		        //reset_direction(current_floor); IKKE TESTET Å KOMMENTERE UT DENN E
                 reset_order(current_floor); //sletter alle bestillinger i denne etasjen dersom den blir kalt
 		        printFloor();
 		        start_timer();
@@ -49,7 +48,6 @@ enum State stateControl(enum State current_state){
                 direction = 1;
             }
             else if(elev_get_floor_sensor_signal() == next_floor){
-	            //stop_elevator();
                 printFloor();
                 reset_order(current_floor);
                 start_timer();
@@ -63,7 +61,6 @@ enum State stateControl(enum State current_state){
                 else if(direction == 0){
                     drive_up(); 
                 }
-	    	    printf("%d", direction);
             }
             break;
         case ARRIVED:

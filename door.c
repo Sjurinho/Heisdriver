@@ -9,7 +9,12 @@
 
 
 
-
+void delay(double number_of_seconds){
+    double milli_seconds = 1000 * number_of_seconds;
+    clock_t start_time = clock();
+    while (clock() < start_time + milli_seconds)
+        ;
+}
 
 void start_timer(){
 	time(&start_value); // time() returns seconds since a pre-defined happening

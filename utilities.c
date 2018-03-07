@@ -1,3 +1,4 @@
+#include "door.h"
 #include "utilities.h"
 #include "elev.h"
 #include "control.h"
