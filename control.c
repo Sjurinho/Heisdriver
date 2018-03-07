@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "control.h"
-#include "door.h"
+#include "timer.h"
 #include "utilities.h"
 #include "elev.h"
 

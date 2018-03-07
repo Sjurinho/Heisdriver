@@ -10,6 +10,3 @@ enum State current_state; //hvilken state heisen er i
 
 enum State stateControl(enum State current_state); //funksjon som styrer state til heisen 
 
-int get_order_size();
-int get_floor();
-void reset_order(int floor);
