@@ -42,7 +42,7 @@ void initialize(void){
 }
 
 //Tar seg av bestillingene
-void setOrder(void){
+void set_order(void){
     for(int i = 0; i < N_FLOORS; i++){
         if(elev_get_button_signal(BUTTON_COMMAND, i)){
     		if(order[i][2] != 1){
@@ -153,7 +153,6 @@ void set_floor(void){ //setter current floor)
 		elev_set_floor_indicator(currentFloor);
     }
 }
-
 
 void set_stop(void){
 	stop_elevator();

@@ -4,20 +4,17 @@
 #include <stdio.h>
 
 int main() { 
-    current_state = INITIALIZE;
-    while(current_state != FAIL){
+    currentState = INITIALIZE;
+    while(currentState != FAIL){
 	if (elev_get_stop_signal()){
-		next_state=STOP_SIGNAL;	
-		if (stop){
-			printStop();
-			stop = 0;
-			}
-		}
-        current_state = stateControl(current_state);  
+		nextState=STOP_SIGNAL;	
+		print_stop();
+	}
+        currentState = stateControl(currentState);  
             if(elev_get_obstruction_signal()){ //stopp programmet ved å flikke bryteren aktiv 
-	    	    printOrder();      //skriver ut ordrene når bryteren er flikket 
+	    	    print_order();      //skriver ut ordrene når bryteren er flikket 
                 elev_set_motor_direction(DIRN_STOP);
-		printf("\nOrder_size: %d ", get_order_size());
+		printf("\nOrder_size: %d ", get_orderSize());
                 break;
         }
         // Stop elevator and exit program if the obstruction button is pressed

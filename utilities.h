@@ -30,8 +30,9 @@ int find_collision(void);
 
 void reset_direction(int floor);
 
-int get_order_size(void);
+int get_orderSize(void);
 
 int get_floor(void);
 
 void reset_order(int floor);
+

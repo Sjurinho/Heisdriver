@@ -17,21 +17,24 @@ enum State stateControl(enum State currentState){
             nextState = TAKEORDER;
             break;
        case TAKEORDER:
-            setOrder();
-            delay(100); //dette er nødvendig for at heisen ikke skal åpnes to ganger i samme etasje. 
-            if(get_order_size() !=  0){
+            set_order();
+            delay(150); //dette er nødvendig for at heisen ikke skal åpnes to ganger i samme etasje. 
+            if(get_orderSize() !=  0){
                 nextState = DRIVE;
             }
 	        nextFloor  = get_floor();
             break;
         case DRIVE:
+//	    calculate_while_driving(); 
+		nextFloor = get_floor();
             if(elev_get_floor_sensor_signal() != -1){
                 currentFloor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
                 set_floor(); 
+		printf("\nNext floor is: %d", nextFloor);
             }
     	    elev_set_stop_lamp(0);
 	        set_order();
-	        if(findCollision()){
+	        if(find_collision()){
 	            nextState = ARRIVED;
     	    	printf("noe fett");
 	        	//stop_elevator();

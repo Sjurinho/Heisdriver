@@ -1,6 +1,4 @@
-#include "elev.h"
-#include "utilities.h"
-#include "door.h"
+#include "timer.h"
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
