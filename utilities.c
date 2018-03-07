@@ -145,8 +145,8 @@ void reset_direction(int floor){
     }
     
     order_size -= ordersOnFloor;	 
-    printf("\norder_size: %d", order_size);
-    printf("\nordersOnFloor: %d", ordersOnFloor);
+   // printf("\norder_size: %d", order_size);
+   // printf("\nordersOnFloor: %d", ordersOnFloor);
 }
 
 void set_floor(void){ //setter current floor)
