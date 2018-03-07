@@ -28,17 +28,17 @@ enum State stateControl(enum State current_state){
                 current_floor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
                 set_floor(); 
             }
-	    elev_set_stop_lamp(0);
-	    setOrder();
-	    if(findCollision()){
-	        next_state = ARRIVED;
-		printf("noe fett");
-		//stop_elevator();
-		reset_direction(current_floor);
-		printFloor();
-		start_timer();
-		//elev_set_door_open_lamp(1);		
-	    }
+    	    elev_set_stop_lamp(0);
+	        setOrder();
+	        if(findCollision()){
+	            next_state = ARRIVED;
+    	    	printf("noe fett");
+	        	//stop_elevator();
+		        reset_direction(current_floor);
+		        printFloor();
+		        start_timer();
+		        //elev_set_door_open_lamp(1);		
+            }
             else if(current_floor > next_floor){
                 drive_down();
                 direction = 0; 
@@ -48,28 +48,26 @@ enum State stateControl(enum State current_state){
                 direction = 1;
             }
             else if(elev_get_floor_sensor_signal() == next_floor){
-	        //stop_elevator();
+	            //stop_elevator();
                 printFloor();
                 reset_order(current_floor);
                 start_timer();
-               // elev_set_door_open_lamp(1);
                 next_state = ARRIVED;
             }
-	    
             //Lagt inn denne siden sist. ikke prøvd
             else if(elev_get_floor_sensor_signal() == -1 && next_floor == current_floor){
-                if(direction == 1){
+               if(direction == 1){
                     drive_down();
                 }
-               else if(direction == 0){
+                else if(direction == 0){
                     drive_up(); 
                 }
-	    	printf("%d", direction);
+	    	    printf("%d", direction);
             }
             break;
         case ARRIVED:
-	    stop_elevator();
-	    elev_set_door_open_lamp(1);
+	        stop_elevator();
+	        elev_set_door_open_lamp(1);
             setOrder(); 
             if(check_timer(3.0)){
                 elev_set_door_open_lamp(0);

@@ -39,7 +39,7 @@ void initialize(void){ //Setter heisen i definert tilstand
 }
 
 //order og order_size er globale variabler
-int order[N_FLOORS][3] = {{ 0 }}; //initialiserer en 2D-liste. N_FLOOR etasjer og 3 forskjellige typer knapper
+int order[N_FLOORS][3] = {{ 0 }}; //initialiserer en 2D-liste. N_FLOORS etasjer og 3 forskjellige typer knapper
     /* 2-indeks beskriver å BESTILLE heisen */
     /* 1-indeks beskriver heis OPP-knaoo */
     /* 0-indeks beskriver heis NED-knapp */
@@ -100,10 +100,10 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger
                 if (order[i][j] == 1){
                     return i;
         
-    }
-}
-}
-}
+                }
+            }
+        }
+    }   
     return 0;
 }
 
@@ -130,18 +130,18 @@ void reset_direction(int floor){
     int ordersOnFloor = 0; //muligens litt forvirrende navn, men holder telling
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
     if (order[floor][2]){
-	order[floor][2] = 0;
-	ordersOnFloor++;
+	    order[floor][2] = 0;
+	    ordersOnFloor++;
     }
     if(direction && floor != N_FLOORS-1){
-	elev_set_button_lamp(BUTTON_CALL_UP, floor, 0);
-	ordersOnFloor+=order[floor][1];
-	order[floor][1] = 0;
+	    elev_set_button_lamp(BUTTON_CALL_UP, floor, 0);
+	    ordersOnFloor+=order[floor][1];
+	    order[floor][1] = 0;
     }
     else if(!direction && floor != 0){
-	elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
-	ordersOnFloor+=order[floor][0];
-	order[floor][0] = 0;
+	    elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
+	    ordersOnFloor+=order[floor][0];
+	    order[floor][0] = 0;
     }
     
     order_size -= ordersOnFloor;	 

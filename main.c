@@ -19,7 +19,7 @@ int main() {
             if(elev_get_obstruction_signal()){ //stopp programmet ved å flikke bryteren aktiv 
 	    	    printOrder();      //skriver ut ordrene når bryteren er flikket 
                 elev_set_motor_direction(DIRN_STOP);
-		printf("\n%d ", get_order_size());
+		printf("\nOrder_size: %d ", get_order_size());
                 break;
         }
         // Stop elevator and exit program if the obstruction button is pressed
