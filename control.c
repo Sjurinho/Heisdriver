@@ -18,31 +18,24 @@ enum State stateControl(enum State currentState){
             break;
        case TAKEORDER:
             set_order();
-            delay(150); //dette er nødvendig for at heisen ikke skal åpnes to ganger i samme etasje. 
             if(get_orderSize() !=  0){
                 nextState = DRIVE;
             }
 	        nextFloor  = get_floor();
             break;
         case DRIVE:
-//	    calculate_while_driving(); 
-		nextFloor = get_floor();
+	    nextFloor = get_floor();
             if(elev_get_floor_sensor_signal() != -1){
-                currentFloor = elev_get_floor_sensor_signal(); //heisen tror den er i en etasje når den er mellom 2.
+                currentFloor = elev_get_floor_sensor_signal(); 
                 set_floor(); 
 		printf("\nNext floor is: %d", nextFloor);
             }
     	    elev_set_stop_lamp(0);
-	        set_order();
-	        if(find_collision()){
-	            nextState = ARRIVED;
-    	    	printf("noe fett");
-	        	//stop_elevator();
-		        //reset_direction(currentFloor); IKKE TESTET Å KOMMENTERE UT DENN E
-                reset_order(currentFloor); //sletter alle bestillinger i denne etasjen dersom den blir kalt
-		        print_floor();
-		        start_timer();
-		        //elev_set_door_open_lamp(1);		
+	    set_order();
+	    if(find_collision()){
+	        nextState = ARRIVED;
+		print_floor();
+		start_timer();
             }
             else if(currentFloor > nextFloor){
                 drive_down();
@@ -53,43 +46,41 @@ enum State stateControl(enum State currentState){
                 direction = 1;
             }
             else if(elev_get_floor_sensor_signal() == nextFloor){
-	            //stop_elevator();
                 print_floor();
-                reset_order(currentFloor);
                 start_timer();
                 nextState = ARRIVED;
             }
-            //Lagt inn denne siden sist. ikke prøvd
             else if(elev_get_floor_sensor_signal() == -1 && nextFloor == currentFloor){
-               if(direction == 1){
+               if(direction){
                     drive_down();
                 }
-                else if(direction == 0){
+                else{
                     drive_up(); 
                 }
             }
             break;
         case ARRIVED:
-	        stop_elevator();
-	        elev_set_door_open_lamp(1);
-            set_order(); 
+	    stop_elevator();
+	    elev_set_door_open_lamp(1);
+            set_order();
+            reset_order(currentFloor); 
             if(check_timer(3.0)){
                 elev_set_door_open_lamp(0);
                 nextState = TAKEORDER;
             }
 	    break;
-        case STOP_SIGNAL: //Klarer ikke kjøre ned til 2. får kun åpen dør signal. Opp går fint
-	        while (elev_get_stop_signal()){
-		        set_stop();
-		        start_timer();
-		    }
+        case STOP_SIGNAL: 
+	    while (elev_get_stop_signal()){
+	        set_stop();
+		start_timer();
+	    }
     	    elev_set_stop_lamp(0);
-	        if(elev_get_floor_sensor_signal()!=-1){
-		        nextState=ARRIVED;
-		        break;
-		    }     
-	        nextState=TAKEORDER;
-	        break;      
+	    if(elev_get_floor_sensor_signal()!=-1){
+	        nextState=ARRIVED;
+		break;
+	    }     
+	    nextState=TAKEORDER;
+	    break;      
         case FAIL:
             stop_elevator();
             print_stop();
