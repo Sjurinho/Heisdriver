@@ -10,7 +10,7 @@ enum State stateControl(enum State currentState){
             if (!elev_init()){
                 printf("Hardware is not initialized");
                 nextState = FAIL;
-        		break;
+        	break;
             }
             initialize(); 
             print_floor();
@@ -21,20 +21,18 @@ enum State stateControl(enum State currentState){
             if(get_orderSize() !=  0){
                 nextState = DRIVE;
             }
-	        nextFloor  = get_floor();
+	    nextFloor  = get_floor();
             break;
         case DRIVE:
 	    nextFloor = get_floor();
-            if(elev_get_floor_sensor_signal() != -1){
-                currentFloor = elev_get_floor_sensor_signal(); 
-                set_floor(); 
-		printf("\nNext floor is: %d", nextFloor);
-            }
+	    //calculate_path();
+            set_floor(); 
     	    elev_set_stop_lamp(0);
 	    set_order();
 	    if(find_collision()){
 	        nextState = ARRIVED;
 		print_floor();
+		//reset_order(currentFloor); 
 		start_timer();
             }
             else if(currentFloor > nextFloor){
@@ -48,6 +46,7 @@ enum State stateControl(enum State currentState){
             else if(elev_get_floor_sensor_signal() == nextFloor){
                 print_floor();
                 start_timer();
+		//reset_order(currentFloor); 
                 nextState = ARRIVED;
             }
             else if(elev_get_floor_sensor_signal() == -1 && nextFloor == currentFloor){
@@ -63,6 +62,8 @@ enum State stateControl(enum State currentState){
 	    stop_elevator();
 	    elev_set_door_open_lamp(1);
             set_order();
+	    update_direction();
+	    set_floor();
             reset_order(currentFloor); 
             if(check_timer(3.0)){
                 elev_set_door_open_lamp(0);
@@ -86,9 +87,9 @@ enum State stateControl(enum State currentState){
             print_stop();
             printf("FAILURE");
             nextState = INITIALIZE;
-    		break;
+    	    break;
     	default:
-    		break;
+    	    break;
     }
 	return nextState;
 }

@@ -36,3 +36,6 @@ int get_floor(void);
 
 void reset_order(int floor);
 
+void calculate_path(void);
+
+void update_direction(int floor);

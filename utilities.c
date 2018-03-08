@@ -1,5 +1,6 @@
 #include "utilities.h"
 #include "elev.h"
+#include "timer.h"
 #include "control.h"
 #include <stdio.h>
 
@@ -82,7 +83,7 @@ int check_arrived(){
 }
     
 int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger avhengig av retningen
-    if (direction == 0){
+    if (!direction){
 	for (int i = 0; i < N_FLOORS; i++) {
             for (int j = 0; j < 3; j++) {
                 if (order[i][j] == 1){
@@ -104,6 +105,12 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger 
     return 0;
 }
 
+void update_floor(void){
+	
+
+}
+
+
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
     int onFloor = 0; //muligens litt forvirrende navn, men holder telling
@@ -121,29 +128,6 @@ void reset_order(int floor){
         elev_set_button_lamp(BUTTON_CALL_UP,floor, 0); 
     }
     orderSize -= onFloor; //trekker antall slettede bestillinger fra orderSize
-}
-
-void reset_direction(int floor){
-    int ordersOnFloor = 0; //muligens litt forvirrende navn, men holder telling
-    elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
-    if (order[floor][2]){
-	    order[floor][2] = 0;
-	    ordersOnFloor++;
-    }
-    if(direction && floor != N_FLOORS-1){
-	    elev_set_button_lamp(BUTTON_CALL_UP, floor, 0);
-	    ordersOnFloor+=order[floor][1];
-	    order[floor][1] = 0;
-    }
-    else if(!direction && floor != 0){
-	    elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
-	    ordersOnFloor+=order[floor][0];
-	    order[floor][0] = 0;
-    }
-    
-    orderSize -= ordersOnFloor;	 
-   // printf("\norderSize: %d", orderSize);
-   // printf("\nordersOnFloor: %d", ordersOnFloor);
 }
 
 void set_floor(void){ //setter current floor)
@@ -199,3 +183,44 @@ int find_collision(void){
    return 0;
 }
 
+void update_direction(int floor){
+    if(order[floor][direction]&&direction){
+        direction = 1;
+    }
+    else if(order[floor][direction]&&!direction){
+	direction=0;
+    }
+}
+void calculate_path(void){
+    set_floor();  
+    elev_set_stop_lamp(0); 
+    set_order(); 
+    if(find_collision()){ 
+        nextState = ARRIVED;
+	printf("\nBLUA"); 
+        print_floor(); 
+        start_timer(); 
+    } 
+    else if(currentFloor > nextFloor){ 
+        drive_down(); 
+        direction = 0;  
+    } 
+    else if(currentFloor < nextFloor){ 
+        drive_up(); 
+        direction = 1; 
+    } 
+    else if(elev_get_floor_sensor_signal() == nextFloor){ 
+        print_floor(); 
+        start_timer();
+	printf("\nHEIDU"); 
+        nextState = ARRIVED; 
+    } 
+    else if(elev_get_floor_sensor_signal() == -1 && nextFloor == currentFloor){ 
+        if(direction){ 
+            drive_down(); 
+        } 
+        else{ 
+            drive_up();  
+        } 
+    }
+}
