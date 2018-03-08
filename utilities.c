@@ -15,6 +15,15 @@ int orderSize = 0; //holder kontroll på størrelsen til ordre
 void open_door(void){
     elev_set_door_open_lamp(1);
 }
+void drive(int direction){
+    if(direction){
+	elev_set_motor_direction(DIRN_UP);
+    }
+    else{	
+	elev_set_motor_direction(DIRN_DOWN);
+    }
+	
+}
 
 void close_door(void){
     elev_set_door_open_lamp(0);
@@ -119,7 +128,7 @@ void reset_order(int floor){
             order[floor][i] = 0;
             onFloor++; 
         } 
-    }
+   }
     //skrur av lys
     if(floor != 0){
         elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
@@ -147,6 +156,7 @@ void set_stop(void){
 	if(elev_get_floor_sensor_signal() >= 0){
 		open_door();
 	}	
+	
 }
 
 
@@ -167,11 +177,11 @@ void print_floor(void){
 }
 
 void print_stop(void){
-    printf("Motor stopped!\n");
-    if( elev_get_stop_signal()){
-        printf("Stop light enabled!\n");
-    }
-    print_floor();
+    //printf("Motor stopped!\n");
+    //if( elev_get_stop_signal()){
+      //  printf("Stop light enabled!\n");
+   // }
+    //print_floor();
 }
 
 
@@ -183,14 +193,11 @@ int find_collision(void){
    return 0;
 }
 
-void update_direction(int floor){
-    if(order[floor][direction]&&direction){
-        direction = 1;
-    }
-    else if(order[floor][direction]&&!direction){
-	direction=0;
-    }
+int elevator_is_below_sensor(int direction){
+    return ((direction == 0)&&(elev_get_floor_sensor_signal() ==-1));
 }
+
+
 void calculate_path(void){
     set_floor();  
     elev_set_stop_lamp(0); 

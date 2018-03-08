@@ -39,3 +39,7 @@ void reset_order(int floor);
 void calculate_path(void);
 
 void update_direction(int floor);
+
+void drive(int direction);
+
+int elevator_is_below_sensor(int direction);

@@ -2,10 +2,12 @@
 #include "utilities.h"
 #include "control.h"
 #include <stdio.h>
+#include <time.h>
 
 int main() { 
     currentState = INITIALIZE;
     while(currentState != FAIL){
+	usleep(50000);
 	if (elev_get_stop_signal()){
 		nextState=STOP_SIGNAL;	
 		print_stop();
