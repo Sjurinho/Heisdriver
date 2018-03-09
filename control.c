@@ -14,7 +14,6 @@ enum State stateControl(enum State currentState){
         	    break;
             }
             initialize(); 
-            print_floor();
             nextState = TAKEORDER;
             break;
        case TAKEORDER:
@@ -23,17 +22,17 @@ enum State stateControl(enum State currentState){
                 nextState = DRIVE;
 	            nextFloor  = get_floor();
 	    	if(currentFloor > nextFloor){
-                direction = 0;
+                DIRECTION_UP = 0;
             }
             else if(currentFloor < nextFloor){
-                direction = 1;
+                DIRECTION_UP = 1;
             }
 	    	else if(elev_get_floor_sensor_signal() == -1 && nextFloor==currentFloor){
 		 	    if (lastDir == 0){
-		    	    direction = 1;
+		    	    DIRECTION_UP = 1;
 		 	    }
 		 	    else if(lastDir == 1){
-                    direction = 0;
+                    DIRECTION_UP = 0;
                 } 
 	    	} 
 		}
@@ -42,18 +41,16 @@ enum State stateControl(enum State currentState){
             nextFloor = get_floor();
             set_floor(); 
 	        if (elev_get_floor_sensor_signal() == -1 && nextFloor != currentFloor){
-	           lastDir = direction;
+	           lastDir = DIRECTION_UP;
 	        }
     	    elev_set_stop_lamp(0);
 	        set_order();
-	        drive(direction);
+	        drive(DIRECTION_UP);
 	        if(find_collision()){
 	           nextState = ARRIVED;
-               print_floor();
                start_timer();
             }
             else if(elev_get_floor_sensor_signal() == nextFloor){
-                print_floor();
                 start_timer();
                 nextState = ARRIVED;
             }
@@ -83,7 +80,6 @@ enum State stateControl(enum State currentState){
             break;      
         case FAIL:
             stop_elevator();
-            print_stop();
             printf("FAILURE");
             nextState = INITIALIZE;
     	    break;

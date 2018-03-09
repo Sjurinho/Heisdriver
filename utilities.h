@@ -1,4 +1,4 @@
-int direction;
+int DIRECTION_UP;
 int currentFloor;
 int nextFloor;
 
