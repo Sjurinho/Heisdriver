@@ -17,34 +17,29 @@ enum State stateControl(enum State currentState){
             nextState = TAKEORDER;
             break;
        case TAKEORDER:
-// KUN HER VI ENDRER kjøreretning
             set_order();
             if(get_orderSize() !=  0){
                 nextState = DRIVE;
-	        nextFloor  = get_floor();
+	            nextFloor  = get_floor();
 	    	if(currentFloor > nextFloor){
-			printf("\nBLUE");
-                	direction = 0;
+			    printf("\nBLUE");
+                direction = 0;
             	}
-            	else if(currentFloor < nextFloor){
-			printf("\nDABBADY DABBADA");
-                	direction = 1;
-            	}
+            else if(currentFloor < nextFloor){
+			    printf("\nDABBADY DABBADA");
+                direction = 1;
+            }
 	    	else if(elev_get_floor_sensor_signal() == -1 &&nextFloor==currentFloor){
-			printf("\n \n out of TAKEORDER Em. STOP dir %d nextFLoor %d lastDir %d", direction, nextFloor, lastDir);
-			//lastDir = direction;
-		 	if (lastDir==0){
-		    	direction = 1;
-		 	}
-		 	else if(lastDir==1){direction = 0;} 
-	    		} 
+		 	    if (lastDir==0){
+		    	    direction = 1;
+		 	    }
+		 	    else if(lastDir==1){direction = 0;} 
+	    	} 
 		}
             break;
         case DRIVE:
 	    nextFloor = get_floor();
-	    //calculate_path();
-            set_floor(); 
-	    printf("\nDirection: %d last dir: %d",direction, lastDir);
+        set_floor(); 
 	    if (elev_get_floor_sensor_signal() == -1 && nextFloor!=currentFloor){
 	        lastDir = direction;
 	    }
@@ -81,7 +76,6 @@ enum State stateControl(enum State currentState){
 		start_timer();
 	    }
 	    elev_set_stop_lamp(0);
-	    printf("\nNextFLOOR: %d",nextFloor+1);
 	    if(elev_get_floor_sensor_signal()!=-1){
 	        nextState=ARRIVED;
 		break;
