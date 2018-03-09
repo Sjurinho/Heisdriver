@@ -1,7 +1,7 @@
 /*---DEFINING GLOBAL VARIABLES---*/
-int direction;
-int currentFloor;
-int nextFloor;
+int DIRECTION_UP;
+int CURRENT_FLOOR;
+int NEXT_FLOOR;
 
 /*---FUNCTIONS USED IN STATEMACHINE---*/
 void close_door(void);
