@@ -15,12 +15,12 @@ int orderSize = 0; //holder kontroll på størrelsen til ordre
 void open_door(void){
     elev_set_door_open_lamp(1);
 }
-void drive(int direction){
-    if(direction){
-        elev_set_motor_direction(DIRN_UP);
+void drive(int DIRECTION_UP){
+    if(DIRECTION_UP){
+        elev_set_motor_DIRECTION_UP(DIRN_UP);
     }
     else{	
-        elev_set_motor_direction(DIRN_DOWN);
+        elev_set_motor_DIRECTION_UP(DIRN_DOWN);
     }
 }
 
@@ -29,13 +29,13 @@ void close_door(void){
 }
 
 void stop_elevator(void){
-    elev_set_motor_direction(DIRN_STOP);
+    elev_set_motor_DIRECTION_UP(DIRN_STOP);
 }
 
 //Setter heisen i definert tilstand
 void initialize(void){ 
     while (elev_get_floor_sensor_signal() == -1){
-        elev_set_motor_direction(DIRN_UP); 
+        elev_set_motor_DIRECTION_UP(DIRN_UP); 
 	}
 	stop_elevator();
 	close_door();
@@ -83,7 +83,7 @@ int check_arrived(){
 }
     
 int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger avhengig av retningen
-    if (!direction){
+    if (!DIRECTION_UP){
 	for (int i = 0; i < N_FLOORS; i++) {
             for (int j = 0; j < 3; j++) {
                 if (order[i][j] == 1){
@@ -128,8 +128,8 @@ void reset_order(int floor){
 void set_floor(void){ //setter current floor)
 	int tempFloor = elev_get_floor_sensor_signal();
 	if(tempFloor >= 0){
-		currentFloor = tempFloor;
-		elev_set_floor_indicator(currentFloor);
+		CURRENT_FLOOR = tempFloor;
+		elev_set_floor_indicator(CURRENT_FLOOR);
     }
 }
 
@@ -148,7 +148,7 @@ void set_stop(void){
 int find_collision(void){
     int tempFloor=elev_get_floor_sensor_signal();
     if (tempFloor!=-1){
-        return (order[currentFloor][direction] || order[currentFloor][2]);
+        return (order[CURRENT_FLOOR][DIRECTION_UP] || order[CURRENT_FLOOR][2]);
     }
    return 0;
 }
