@@ -5,8 +5,8 @@
 #include "elev.h"
 
 int lastDir = -9;
-enum State stateControl(enum State CURRENT_STATE){
-     switch (CURRENT_STATE) {
+enum State stateControl(enum State currentState){
+     switch (currentState) {
         case INITIALIZE:
             if (!elev_init()){
                 printf("Hardware is not initialized");

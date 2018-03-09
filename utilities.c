@@ -17,10 +17,10 @@ void open_door(void){
 }
 void drive(int DIRECTION_UP){
     if(DIRECTION_UP){
-        elev_set_motor_DIRECTION_UP(DIRN_UP);
+        elev_set_motor_direction(DIRN_UP);
     }
     else{	
-        elev_set_motor_DIRECTION_UP(DIRN_DOWN);
+        elev_set_motor_direction(DIRN_DOWN);
     }
 }
 
@@ -29,13 +29,13 @@ void close_door(void){
 }
 
 void stop_elevator(void){
-    elev_set_motor_DIRECTION_UP(DIRN_STOP);
+    elev_set_motor_direction(DIRN_STOP);
 }
 
 //Setter heisen i definert tilstand
 void initialize(void){ 
     while (elev_get_floor_sensor_signal() == -1){
-        elev_set_motor_DIRECTION_UP(DIRN_UP); 
+        elev_set_motor_direction(DIRN_UP); 
 	}
 	stop_elevator();
 	close_door();
@@ -78,9 +78,6 @@ int get_orderSize(){
     return orderSize;
 }
 
-int check_arrived(){
-    return (currentState == nextState);
-}
     
 int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger avhengig av retningen
     if (!DIRECTION_UP){

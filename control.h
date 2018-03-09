@@ -3,8 +3,8 @@
 
 /*---CONTAINS GLOBAL VARIABLES AND THE MAIN STATEMACHINE---*/
 
-enum State nextState; 
-enum State currentState; 
+enum State NEXT_STATE; 
+enum State CURRENT_STATE; 
 
 
 enum State 
