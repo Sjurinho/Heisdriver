@@ -145,22 +145,6 @@ void set_stop(void){
 	
 }
 
-void print_order(void){
-	for (int i = 0; i < N_FLOORS; i++){
-		for(int j = 0; j < 3; j++){
-			printf("%d ", order[i][j]);
-			}
-		printf("\n");
-	}
-}
-
-void print_floor(void){
-    printf("current floor is: ");
-	printf("%d", currentFloor+1);
-    printf("\n");
-	
-}
-
 int find_collision(void){
     int tempFloor=elev_get_floor_sensor_signal();
     if (tempFloor!=-1){
