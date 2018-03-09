@@ -3,6 +3,7 @@
 #include "timer.h"
 #include "utilities.h"
 #include "elev.h"
+
 int lastDir = -9;
 enum State stateControl(enum State currentState){
      switch (currentState) {
@@ -10,7 +11,7 @@ enum State stateControl(enum State currentState){
             if (!elev_init()){
                 printf("Hardware is not initialized");
                 nextState = FAIL;
-        	break;
+        	    break;
             }
             initialize(); 
             print_floor();
@@ -22,36 +23,35 @@ enum State stateControl(enum State currentState){
                 nextState = DRIVE;
 	            nextFloor  = get_floor();
 	    	if(currentFloor > nextFloor){
-			    printf("\nBLUE");
                 direction = 0;
-            	}
+            }
             else if(currentFloor < nextFloor){
-			    printf("\nDABBADY DABBADA");
                 direction = 1;
             }
-	    	else if(elev_get_floor_sensor_signal() == -1 &&nextFloor==currentFloor){
-		 	    if (lastDir==0){
+	    	else if(elev_get_floor_sensor_signal() == -1 && nextFloor==currentFloor){
+		 	    if (lastDir == 0){
 		    	    direction = 1;
 		 	    }
-		 	    else if(lastDir==1){direction = 0;} 
+		 	    else if(lastDir == 1){
+                    direction = 0;
+                } 
 	    	} 
 		}
             break;
         case DRIVE:
-	    nextFloor = get_floor();
-        set_floor(); 
-	    if (elev_get_floor_sensor_signal() == -1 && nextFloor!=currentFloor){
-	        lastDir = direction;
-	    }
+            nextFloor = get_floor();
+            set_floor(); 
+	        if (elev_get_floor_sensor_signal() == -1 && nextFloor != currentFloor){
+	           lastDir = direction;
+	        }
     	    elev_set_stop_lamp(0);
-	    set_order();
-	    drive(direction);
-	    if(find_collision()){
-	        nextState = ARRIVED;
-		print_floor();
-		start_timer();
+	        set_order();
+	        drive(direction);
+	        if(find_collision()){
+	           nextState = ARRIVED;
+               print_floor();
+               start_timer();
             }
-
             else if(elev_get_floor_sensor_signal() == nextFloor){
                 print_floor();
                 start_timer();
@@ -59,29 +59,28 @@ enum State stateControl(enum State currentState){
             }
             break;
         case ARRIVED:
-	    stop_elevator();
-	    elev_set_door_open_lamp(1);
+            stop_elevator();
+            elev_set_door_open_lamp(1);
             set_order();
-	    set_floor();
-
+            set_floor();
             reset_order(currentFloor);
             if(check_timer(3.0)){
                 elev_set_door_open_lamp(0);
                 nextState = TAKEORDER;
             }
-	    break;
+	        break;
         case STOP_SIGNAL: 
-	    while (elev_get_stop_signal()){
-	        set_stop();
-		start_timer();
-	    }
-	    elev_set_stop_lamp(0);
-	    if(elev_get_floor_sensor_signal()!=-1){
-	        nextState=ARRIVED;
-		break;
-	    }     
-	    nextState=TAKEORDER;
-	    break;      
+            while (elev_get_stop_signal()){
+                set_stop();
+                start_timer();
+            }
+            elev_set_stop_lamp(0);
+            if(elev_get_floor_sensor_signal()!=-1){
+                nextState=ARRIVED;
+                break;
+            }     
+            nextState=TAKEORDER;
+            break;      
         case FAIL:
             stop_elevator();
             print_stop();
@@ -93,14 +92,4 @@ enum State stateControl(enum State currentState){
     }
 	return nextState;
 }
-
-
-
-
-
-
-
-
-
-
 
