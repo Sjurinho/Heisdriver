@@ -4,24 +4,18 @@
 #include "control.h"
 #include <stdio.h>
 
-/*---DEFINERER GLOBALE VARIABLER---*/
+/*---Defining 2D-array that contains orders---*/
 int order[N_FLOORS][3] = {{ 0 }};
-    /* 2-indeks beskriver å BESTILLE heisen */
-    /* 1-indeks beskriver heis OPP-knaoo */
-    /* 0-indeks beskriver heis NED-knapp */
-int orderSize = 0; //holder kontroll på størrelsen til ordre 
+    /* 0-index describes elevator DOWN button */
+    /* 1-index describes elevator UP button*/
+    /* 2-index describes INSIDE button */
 
-//forenkling av alle funksjonsnavn + printer til konsoll hva som skjer
+ //keeps track of how many orders that are currently active
+int orderSize = 0;
+
+
 void open_door(void){
     elev_set_door_open_lamp(1);
-}
-void drive(int DIRECTION_UP){
-    if(DIRECTION_UP){
-        elev_set_motor_direction(DIRN_UP);
-    }
-    else{	
-        elev_set_motor_direction(DIRN_DOWN);
-    }
 }
 
 void close_door(void){
@@ -32,7 +26,17 @@ void stop_elevator(void){
     elev_set_motor_direction(DIRN_STOP);
 }
 
-//Setter heisen i definert tilstand
+void drive(int DIRECTION_UP){
+    if(DIRECTION_UP){
+        elev_set_motor_direction(DIRN_UP);
+    }
+    else{	
+        elev_set_motor_direction(DIRN_DOWN);
+    }
+}
+
+
+//Initializes the elevator
 void initialize(void){ 
     while (elev_get_floor_sensor_signal() == -1){
         elev_set_motor_direction(DIRN_UP); 
@@ -42,17 +46,17 @@ void initialize(void){
 	set_floor();
 }
 
-//Tar seg av bestillingene
+//Controlling the different orders
 void set_order(void){
-    for(int i = 0; i < N_FLOORS; i++){
-        if(elev_get_button_signal(BUTTON_COMMAND, i)){
+    for(int i = 0; i < N_FLOORS; i++){ 
+        if(elev_get_button_signal(BUTTON_COMMAND, i)){ //Inside buttons
     		if(order[i][2] != 1){
         		order[i][2] = 1;
            		orderSize++; 
         		}
         elev_set_button_lamp(BUTTON_COMMAND, i, 1);
         }
-        if( i < N_FLOORS-1){
+        if( i < N_FLOORS-1){ //Up buttons
         	if(elev_get_button_signal(BUTTON_CALL_UP, i)){
             	if(order[i][1] != 1){
                     order[i][1] = 1; 
@@ -61,7 +65,7 @@ void set_order(void){
                 elev_set_button_lamp(BUTTON_CALL_UP, i, 1);
 	        }
         }   
-        if( i > 0){ //NED. dvs heisen i 2., 3. eller 4. etg.
+        if( i > 0){ //Down buttons
 	        if(elev_get_button_signal(BUTTON_CALL_DOWN, i)){
 	            if(order[i][0] != 1){	
                     order[i][0] = 1; 
@@ -79,7 +83,8 @@ int get_orderSize(){
 }
 
     
-int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger avhengig av retningen
+/*--- Depending on which direction the elevator is going, decides the next floor.---*/
+int get_floor(){ 
     if (!DIRECTION_UP){
 	for (int i = 0; i < N_FLOORS; i++) {
             for (int j = 0; j < 3; j++) {
@@ -102,27 +107,26 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger 
     return 0;
 }
 
-
+/*--- Resets all orders and turn of lights on the floor if called. Updates orderSize ---*/
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
-    int onFloor = 0; //muligens litt forvirrende navn, men holder telling
-    for (int i = 0; i <=2; i++){ // for alle de forskjellie knappene, opp, ned, bestilling  
-        if(order[floor][i] == 1){ //slette alle eksisterende bestillinger som finnes i gitt etasje. Teller antall slettede bestillinger
+    int onFloor = 0; 
+    for (int i = 0; i <=2; i++){ 
+        if(order[floor][i] == 1){
             order[floor][i] = 0;
             onFloor++; 
         } 
-   }
-    //skrur av lys
+    }
     if(floor != 0){
         elev_set_button_lamp(BUTTON_CALL_DOWN, floor, 0);
     }
     if(floor != N_FLOORS-1){
         elev_set_button_lamp(BUTTON_CALL_UP,floor, 0); 
     }
-    orderSize -= onFloor; //trekker antall slettede bestillinger fra orderSize
+    orderSize -= onFloor; 
 }
 
-void set_floor(void){ //setter current floor)
+void set_floor(void){
 	int tempFloor = elev_get_floor_sensor_signal();
 	if(tempFloor >= 0){
 		CURRENT_FLOOR = tempFloor;
