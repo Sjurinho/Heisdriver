@@ -1,8 +1,11 @@
 #include <time.h>
+
+/*---DEFINING GLOBAL TIME VARIABLES AND FUNCTIONS---*/
 time_t startValue;
 time_t endValue;
-void door_delay(int timeSpent);
-void timer(int timeSpent);
+
+//starts the timer
 void start_timer();
-void delay(double number_of_seconds);
+
+//checks if the timer has reached seconds seconds
 int check_timer(double seconds);
