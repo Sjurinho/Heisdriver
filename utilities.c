@@ -17,24 +17,15 @@ void open_door(void){
 }
 void drive(int direction){
     if(direction){
-	elev_set_motor_direction(DIRN_UP);
+        elev_set_motor_direction(DIRN_UP);
     }
     else{	
-	elev_set_motor_direction(DIRN_DOWN);
+        elev_set_motor_direction(DIRN_DOWN);
     }
-	
 }
 
 void close_door(void){
     elev_set_door_open_lamp(0);
-}
-
-void drive_up(void){
-    elev_set_motor_direction(DIRN_UP);
-}
-
-void drive_down(void){
-    elev_set_motor_direction(DIRN_DOWN);
 }
 
 void stop_elevator(void){
@@ -114,11 +105,6 @@ int get_floor(){ //Sjekker om noen av elementene er 1 for å finne bestillinger 
     return 0;
 }
 
-void update_floor(void){
-	
-
-}
-
 
 void reset_order(int floor){
     elev_set_button_lamp(BUTTON_COMMAND, floor, 0);
@@ -159,7 +145,6 @@ void set_stop(void){
 	
 }
 
-
 void print_order(void){
 	for (int i = 0; i < N_FLOORS; i++){
 		for(int j = 0; j < 3; j++){
@@ -176,58 +161,10 @@ void print_floor(void){
 	
 }
 
-void print_stop(void){
-    //printf("Motor stopped!\n");
-    //if( elev_get_stop_signal()){
-      //  printf("Stop light enabled!\n");
-   // }
-    //print_floor();
-}
-
-
 int find_collision(void){
     int tempFloor=elev_get_floor_sensor_signal();
     if (tempFloor!=-1){
         return (order[currentFloor][direction] || order[currentFloor][2]);
     }
    return 0;
-}
-
-int elevator_is_below_sensor(int direction){
-    return ((direction == 0)&&(elev_get_floor_sensor_signal() ==-1));
-}
-
-
-void calculate_path(void){
-    set_floor();  
-    elev_set_stop_lamp(0); 
-    set_order(); 
-    if(find_collision()){ 
-        nextState = ARRIVED;
-	printf("\nBLUA"); 
-        print_floor(); 
-        start_timer(); 
-    } 
-    else if(currentFloor > nextFloor){ 
-        drive_down(); 
-        direction = 0;  
-    } 
-    else if(currentFloor < nextFloor){ 
-        drive_up(); 
-        direction = 1; 
-    } 
-    else if(elev_get_floor_sensor_signal() == nextFloor){ 
-        print_floor(); 
-        start_timer();
-	printf("\nHEIDU"); 
-        nextState = ARRIVED; 
-    } 
-    else if(elev_get_floor_sensor_signal() == -1 && nextFloor == currentFloor){ 
-        if(direction){ 
-            drive_down(); 
-        } 
-        else{ 
-            drive_up();  
-        } 
-    }
 }
