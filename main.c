@@ -5,12 +5,12 @@
 #include <time.h>
 
 int main() { 
-    currentState = INITIALIZE;
-    while(currentState != FAIL){
+    CURRENT_STATE = INITIALIZE;
+    while(CURRENT_STATE != FAIL){
 	if (elev_get_stop_signal()){
-		nextState = STOP_SIGNAL;	
+		NEXT_STATE = STOP_SIGNAL;	
 	}
-        currentState = stateControl(currentState);  
+        CURRENT_STATE = stateControl(CURRENT_STATE);  
             if(elev_get_obstruction_signal()){ //stopp programmet ved å flikke bryteren aktiv 
                 elev_set_motor_direction(DIRN_STOP);
                 break;

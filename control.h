@@ -3,7 +3,6 @@
 
 /*---CONTAINS GLOBAL VARIABLES AND THE MAIN STATEMACHINE---*/
 
-int direction; //0 down, 1 up
 enum State nextState; 
 enum State currentState; 
 
