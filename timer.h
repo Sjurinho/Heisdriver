@@ -4,8 +4,8 @@
 time_t startValue;
 time_t endValue;
 
-//starts the timer
+//Starts the timer
 void start_timer();
 
-//checks if the timer has reached seconds seconds
+//Checks if the timer has reached seconds seconds
 int check_timer(double seconds);
