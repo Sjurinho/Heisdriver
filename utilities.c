@@ -3,6 +3,8 @@
 #include "timer.h"
 #include "control.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 /*---Defining 2D-array that contains orders---*/
 int order[N_FLOORS][3] = {{ 0 }};
@@ -127,9 +129,8 @@ void reset_order(int floor){
 }
 
 void set_floor(void){
-	int tempFloor = elev_get_floor_sensor_signal();
-	if(tempFloor >= 0){
-		CURRENT_FLOOR = tempFloor;
+	if(elev_get_floor_sensor_signal() >= 0){
+		CURRENT_FLOOR = elev_get_floor_sensor_signal();
 		elev_set_floor_indicator(CURRENT_FLOOR);
     }
 }
@@ -152,4 +153,53 @@ int find_collision(void){
         return (order[CURRENT_FLOOR][DIRECTION_UP] || order[CURRENT_FLOOR][2]);
     }
    return 0;
+}
+
+void set_direction(int lastDir){
+	set_order();
+	if(get_orderSize() !=  0){
+        NEXT_STATE = DRIVE;
+        NEXT_FLOOR  = get_floor();
+        if(CURRENT_FLOOR > NEXT_FLOOR){
+            DIRECTION_UP = 0;
+        }
+        else if(CURRENT_FLOOR < NEXT_FLOOR){
+            DIRECTION_UP = 1;
+        }
+        else if(elev_get_floor_sensor_signal() == -1 && NEXT_FLOOR==CURRENT_FLOOR){
+            if (lastDir == 0){
+                DIRECTION_UP = 1;
+            }
+            else if(lastDir == 1){
+                DIRECTION_UP = 0;
+            } 
+        } 
+    }
+}
+
+int drive_to_floor(int lastDir){
+	set_floor(); 
+	if (elev_get_floor_sensor_signal() == -1 && NEXT_FLOOR != CURRENT_FLOOR){
+		lastDir = DIRECTION_UP;
+	}
+	elev_set_stop_lamp(0);
+    set_order();
+    drive(DIRECTION_UP);
+	if(find_collision()){
+		NEXT_STATE = ARRIVED;
+	    start_timer();
+    }
+    else if(elev_get_floor_sensor_signal() == NEXT_FLOOR){
+    	start_timer();
+    	NEXT_STATE = ARRIVED;
+    }
+    return lastDir;
+}
+
+void stopping(void){
+	while (elev_get_stop_signal()){
+		set_stop();
+		start_timer();
+	}
+	elev_set_stop_lamp(0);   
 }

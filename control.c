@@ -17,43 +17,11 @@ enum State stateControl(enum State currentState){
             NEXT_STATE = TAKEORDER;
             break;
        case TAKEORDER:
-            set_order();
-            if(get_orderSize() !=  0){
-                NEXT_STATE = DRIVE;
-	            NEXT_FLOOR  = get_floor();
-	    	if(CURRENT_FLOOR > NEXT_FLOOR){
-                DIRECTION_UP = 0;
-            }
-            else if(CURRENT_FLOOR < NEXT_FLOOR){
-                DIRECTION_UP = 1;
-            }
-	    	else if(elev_get_floor_sensor_signal() == -1 && NEXT_FLOOR==CURRENT_FLOOR){
-		 	    if (lastDir == 0){
-		    	    DIRECTION_UP = 1;
-		 	    }
-		 	    else if(lastDir == 1){
-                    DIRECTION_UP = 0;
-                } 
-	    	} 
-		}
+            set_direction(lastDir);
             break;
         case DRIVE:
-            NEXT_FLOOR = get_floor();
-            set_floor(); 
-	        if (elev_get_floor_sensor_signal() == -1 && NEXT_FLOOR != CURRENT_FLOOR){
-	           lastDir = DIRECTION_UP;
-	        }
-    	    elev_set_stop_lamp(0);
-	        set_order();
-	        drive(DIRECTION_UP);
-	        if(find_collision()){
-	           NEXT_STATE = ARRIVED;
-               start_timer();
-            }
-            else if(elev_get_floor_sensor_signal() == NEXT_FLOOR){
-                start_timer();
-                NEXT_STATE = ARRIVED;
-            }
+            NEXT_FLOOR = get_floor(); //continously update so path is optimal
+            lastDir = drive_to_floor(lastDir);
             break;
         case ARRIVED:
             stop_elevator();
@@ -67,7 +35,7 @@ enum State stateControl(enum State currentState){
             }
 	        break;
         case STOP_SIGNAL: 
-            while (elev_get_stop_signal()){
+            /*while (elev_get_stop_signal()){
                 set_stop();
                 start_timer();
             }
@@ -75,7 +43,12 @@ enum State stateControl(enum State currentState){
             if(elev_get_floor_sensor_signal()!=-1){
                 NEXT_STATE=ARRIVED;
                 break;
-            }     
+            } */
+            stopping();
+            if(elev_get_floor_sensor_signal()!=-1){
+                NEXT_STATE=ARRIVED;
+                break;
+            }      
             NEXT_STATE=TAKEORDER;
             break;      
         case FAIL:
